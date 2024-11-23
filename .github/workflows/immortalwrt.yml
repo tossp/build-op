@@ -7,7 +7,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build OpenWrt
+name: 构建 Immortalwrt
 
 on:
   repository_dispatch:
@@ -102,7 +102,7 @@ jobs:
         run: |
           cd openwrt
           make defconfig
-          make download -j8
+          make download -j16
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
           
@@ -110,7 +110,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: builder_config
-          path: openwrt/.config
+          path: .config
 
       - name: 编译固件 - Compile the firmware
         id: compile
