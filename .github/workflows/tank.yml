@@ -20,7 +20,6 @@ env:
   CONFIG_FILE: config/tank
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
-  UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
@@ -106,12 +105,11 @@ jobs:
           make download -j8
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
-
-      - name: 上传bin目录 - Upload bin directory
+          
+      - name: 上传配置文件 - Upload config file
         uses: actions/upload-artifact@main
-        if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
         with:
-          name: config_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+          name: builder_config
           path: openwrt/.config
 
       - name: 编译固件 - Compile the firmware
@@ -131,10 +129,12 @@ jobs:
 
       - name: 上传bin目录 - Upload bin directory
         uses: actions/upload-artifact@main
-        if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
+        if: steps.compile.outputs.status == 'success'
         with:
           name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-          path: openwrt/bin
+          path: |
+            openwrt/bin
+            openwrt/.config
 
       - name: 整理文件 - Organize files
         id: organize
