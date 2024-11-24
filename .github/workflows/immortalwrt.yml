@@ -44,6 +44,7 @@ jobs:
           sudo timedatectl set-timezone "$TZ"
           sudo mkdir -p /workdir
           sudo chown $USER:$GROUPS /workdir
+          
       - name: 拉取源代码 - Clone source code
         working-directory: /workdir
         run: |
