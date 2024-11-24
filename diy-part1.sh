@@ -99,6 +99,6 @@
 # cp -af feeds/extraipk/patch/brcmfmac4366c-pcie.bin ./package/lean/k3-brcmfmac4366c-firmware/files/lib/firmware/brcm/brcmfmac4366c-pcie.bin
 # echo '=========Replace k3 wireless firmware OK!========='
 
-echo '添加Lucky(万吉)软件源'
-echo 'src-git lucky https://github.com/gdy666/luci-app-lucky' >>feeds.conf.default
-echo '=========Add lucky source OK!========='
+# echo '添加Lucky(万吉)软件源'
+# echo 'src-git lucky https://github.com/gdy666/luci-app-lucky' >>feeds.conf.default
+# echo '=========Add lucky source OK!========='
