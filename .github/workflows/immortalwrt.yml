@@ -83,9 +83,15 @@ jobs:
           make download -j16
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
-          
+
       - name: 查看编译配置文件内容 - View configuration file content
-        run: cat openwrt/.config
+        id: cowtransfer
+        if: (!cancelled())
+        run: |
+          curl -fsSL git.io/file-transfer | sh
+          ./transfer cow --block 2621440 -s -p 64 --no-progress openwrt/.config 2>&1 | tee cowtransfer.log
+          echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
+          echo "::set-output name=url::$(cat cowtransfer.log | grep https | cut -f3 -d" ")"
 
       - name: 编译固件 - Compile the firmware
         id: compile
