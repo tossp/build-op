@@ -32,15 +32,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@main
 
-      - name: 清理磁盘 - Space cleanup
-        env:
-          DEBIAN_FRONTEND: noninteractive
-        run: |
-          docker rmi `docker images -q`
-          sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d/* /usr/local/lib/android /opt/ghc
-          sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* adoptopenjdk* mysql* php* mongodb* dotnet* moby* snapd* || true
-          df -hT $PWD
-
       - name: 初始化编译环境 - Initialization environment
         env:
           DEBIAN_FRONTEND: noninteractive
@@ -108,7 +99,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: builder_config
-          path: .config
+          path: openwrt/.config
 
       - name: 编译固件 - Compile the firmware
         id: compile
