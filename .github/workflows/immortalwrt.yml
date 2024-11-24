@@ -11,6 +11,11 @@ name: 构建 ImmortalWrt 固件
 
 on:
   repository_dispatch:
+  push:
+    branches:
+      - 'main'
+  schedule:
+    - cron: '0 1 * * *' # 每天凌晨1点执行构建任务
   workflow_dispatch:
 
 env:
