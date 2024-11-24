@@ -50,41 +50,41 @@ jobs:
         working-directory: /workdir
         run: |
           df -hT $PWD
-          git clone -b $REPO_BRANCH --single-branch --filter=blob:none $REPO_URL openwrt
-          ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+          git clone -b $REPO_BRANCH --single-branch --filter=blob:none $REPO_URL buider
+          ln -sf /workdir/buider $GITHUB_WORKSPACE/buider
 
       - name: 尝试获取缓存 - Cache building
         uses: klever1988/cachewrtbuild@main
         with:
           ccache: "true"
-          prefix: ${{ github.workspace }}/openwrt
+          prefix: ${{ github.workspace }}/immortalwrt
 
       - name: 加载自定义feeds文件 - Load custom feeds
         run: |
-          [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
+          [ -e $FEEDS_CONF ] && mv $FEEDS_CONF buider/feeds.conf.default
           chmod +x $DIY_P1_SH
-          cd openwrt
+          cd buider
           $GITHUB_WORKSPACE/$DIY_P1_SH
 
       - name: 更新feeds中描述内容 - Update feeds
-        run: cd openwrt && ./scripts/feeds update -a
+        run: cd buider && ./scripts/feeds update -a
 
       - name: 安装feeds中描述内容 - Install feeds
-        run: cd openwrt && ./scripts/feeds install -a
+        run: cd buider && ./scripts/feeds install -a
 
       - name: 加载自定义编译配置文件 - Load custom configuration
         run: |
-          [ -e files ] && mv files openwrt/files
-          [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+          [ -e files ] && mv files buider/files
+          [ -e $CONFIG_FILE ] && mv $CONFIG_FILE buider/.config
           chmod +x $DIY_P2_SH
-          cd openwrt
+          cd buider
           $GITHUB_WORKSPACE/$DIY_P2_SH
 
       - name: 下载编译所需依赖文件 - Download package
         id: package
         if: (!cancelled())
         run: |
-          cd openwrt
+          cd buider
           make defconfig
           make download -j16
           find dl -size -1024c -exec ls -l {} \;
@@ -97,12 +97,12 @@ jobs:
         if: (!cancelled())
         with:
           name: builder_config
-          path: openwrt/config.ts
+          path: buider/config.ts
 
       - name: 编译固件 - Compile the firmware
         id: compile
         run: |
-          cd openwrt
+          cd buider
           echo -e "$(nproc) thread compile"
           make -j$(nproc) || make -j1 || make -j1 V=s
           cp .config bin/config.ts
@@ -120,13 +120,13 @@ jobs:
         if: steps.compile.outputs.status == 'success'
         with:
           name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-          path: openwrt/bin
+          path: buider/bin
 
       - name: 整理文件 - Organize files
         id: organize
         if: steps.compile.outputs.status == 'success' && !cancelled()
         run: |
-          cd openwrt/bin/targets/*/*
+          cd buider/bin/targets/*/*
           rm -rf packages
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
