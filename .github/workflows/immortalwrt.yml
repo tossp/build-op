@@ -113,9 +113,7 @@ jobs:
         if: steps.compile.outputs.status == 'success'
         with:
           name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-          path: |
-            openwrt/bin
-            openwrt/.config
+          path: openwrt/bin
 
       - name: 整理文件 - Organize files
         id: organize
