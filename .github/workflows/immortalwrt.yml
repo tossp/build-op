@@ -10,18 +10,17 @@
 name: 构建 ImmortalWrt 固件
 
 on:
-  repository_dispatch:
   push:
     branches:
       - 'main'
   schedule:
     - cron: '0 1 * * *' # 每天凌晨1点执行构建任务
+  repository_dispatch:
   workflow_dispatch:
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
   REPO_BRANCH: master
-  FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: config/tank
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
@@ -57,11 +56,10 @@ jobs:
         uses: klever1988/cachewrtbuild@main
         with:
           ccache: "true"
-          prefix: ${{ github.workspace }}/immortalwrt
+          prefix: ${{ github.workspace }}/buider
 
       - name: 加载自定义feeds文件 - Load custom feeds
         run: |
-          [ -e $FEEDS_CONF ] && mv $FEEDS_CONF buider/feeds.conf.default
           chmod +x $DIY_P1_SH
           cd buider
           $GITHUB_WORKSPACE/$DIY_P1_SH
