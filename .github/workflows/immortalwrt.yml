@@ -13,9 +13,9 @@ on:
   repository_dispatch:
   push:
     branches:
-      - 'main'
+      - "main"
   schedule:
-    - cron: '0 1 * * *' # 每天凌晨1点执行构建任务
+    - cron: "0 1 * * *" # 每天凌晨1点执行构建任务
   workflow_dispatch:
 
 env:
@@ -84,7 +84,7 @@ jobs:
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
           cp .config config.ts
-          
+
       - name: 上传配置文件 - Upload config file
         uses: actions/upload-artifact@main
         if: (!cancelled())
