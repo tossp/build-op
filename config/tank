@@ -1,3 +1,37 @@
 CONFIG_TARGET_x86=y
 CONFIG_TARGET_x86_64=y
 CONFIG_TARGET_x86_64_DEVICE_generic=y
+CONFIG_GRUB_TIMEOUT="1"
+CONFIG_GRUB_TITLE="TossWrt x86_64"
+
+CONFIG_KERNEL_BUILD_USER="wrt@TossP.com"
+CONFIG_KERNEL_BUILD_DOMAIN="TossP.com"
+
+CONFIG_PACKAGE_kmod-ikconfig=y
+
+
+# 网口驱动
+CONFIG_PACKAGE_kmod-r8169=y
+
+CONFIG_PACKAGE_default-settings-chn=y
+
+CONFIG_PACKAGE_dnsmasq-full=y
+CONFIG_PACKAGE_ip-full=y
+CONFIG_PACKAGE_luci-proto-openconnect=y
+CONFIG_PACKAGE_luci-proto-wireguard=y
+CONFIG_PACKAGE_iftop=y
+
+CONFIG_LUCI_LANG_zh_Hans=y
+# Web软件包
+CONFIG_PACKAGE_luci-mod-rpc=y
+CONFIG_PACKAGE_luci-app-attendedsysupgrade=y
+CONFIG_PACKAGE_luci-app-argon-config=y
+CONFIG_PACKAGE_luci-app-vnstat2=y
+CONFIG_PACKAGE_luci-app-ddns-go=y
+CONFIG_PACKAGE_luci-app-nlbwmon=y
+CONFIG_PACKAGE_luci-app-upnp=y
+CONFIG_PACKAGE_luci-app-watchcat=y
+CONFIG_PACKAGE_luci-app-firewall=y
+# CONFIG_PACKAGE_luci-i18n-package-manager-zh-cn=y
+
+CONFIG_PACKAGE_qemu-ga=y
